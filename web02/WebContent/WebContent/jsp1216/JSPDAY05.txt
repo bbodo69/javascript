@@ -1,0 +1,129 @@
+[jsp05]
+
+1. JDBC : Java DataBase Connectivity
+
+	자바/JSP 에서 데이터 베이스 프로그래밍을 할 때 JDBC API 를 사용한다.
+	관계형 데이터베이스 시스템에 접근하여 SQL문을 실행하기 위한 API로,
+	DBMS 종류에 상관없이 동일한 방법으로 데이터베이스 작업을 처리할 수 있다.
+	DBMS에 알맞은 JDBC 드라이버가 필요하며, 각 DBMS는 자신에게 맞는 JDBC 드라이버를 제공하고 있다.
+	
+	자바어플리케이션 --> JDBC API --> 오라클 드라이버 <----> 오라클 데이터베이스
+					  MySQL  드라이버 <----> MySQL  데이터베이스
+
+	1) 드라이버 준비
+	www.oracle.com
+
+	2) 드라이버 패치
+		WEB-INF > lib 폴더안에 배치하기
+	
+	3) JDBC로 JSP와 데이터베이스 연동 단계
+		0. java.sql.클래스들 패키지 임포트
+			JDBC API 는 java.sql.* 패키지에 의해 구현된다.
+
+		1. JDBC 드라이버 로딩
+			Class.forName() 메서드 이용하여 드라이버 로딩
+			프로그램 수행시 한번만 필요
+			JDBC가 로딩되면 자동으로 객체가 생성되고,
+			DriverManager 클래스에 등록된다.
+			DriverManager 클래스는 JDBC에서 추가되는 클래스들을 관리해주는 클래스			
+
+		2. DB 접속을 위한 Connection 객체 생성
+			DB를 사용하려면 커넥션을 구해야한다.
+			Connection 타입이 데이터베이스 커넥션을 나타내며,
+			DriverManager클래스의 getConnection() 메서드를 이용하여 구할 수 있다.
+			* 메서드
+			static Connection getConnection(String jdbcURL, String user, String password)
+
+			* jdbcURL
+			데이터 베이스 식별을 위한 url
+			오라클에서 제공하는 JDBC드라이버는 아래와 같은 형식을 취한다.
+
+			jdbc:oracle:thin:@ip:port:SID
+			ex) jdbc:oracle:thin:@192.168.0.252:1521:ORCL (학원에서 사용)
+			ex) jdbc:oracle:thin:@nullmaster.iptime.org:3000:ORCL (외부에서 사용)
+
+			* 오라클 드라이버 Thin / OCI
+							
+			
+
+		3. 쿼리 실행을 위한 Statement 객체 생성, 쿼리문(SQL) 작성
+			쿼리문을 실행하려면 생성한 Connection 객체로부터 Statement를 생성하고
+			쿼리를 실행 할 수 있다.	
+			
+			* 쿼리 실행 객체 3가지
+			Statement		: 정적쿼리에 적용.
+			PreparedStatement	: 동적쿼리에 적용.
+						  객체 생성시, SQL 쿼리의 틀을 미리 만들어 놓고
+						  들어갈 값이 있다면 나중에 지정 한다.
+			CallableStatement	
+			
+
+		4. 쿼리 실행	
+			PreparedStatement 객체를 사용하면 쿼리 실행 할 수 있다.
+		
+			*메서드
+			ResultSet 	executeQuery()	: select문 실행할 때 사용
+			int 		excuteUpdate()	: INSERT, UPDATE, DELETE 문 실행할 때 사용.
+							  결과가 없을때 사용.
+							  실제로는 결과값이 있지만...
+							  (반환값은 케이스별로 다름
+							  DML은 갱싱 레코드수 반환
+							  DDL 결과가 없는 0 반환)	
+			void		closd()		  : 객체반환, 메모리 해제.
+							  
+
+		5. 결과값 사용 (ResultSet)
+			
+			SLELECT 쿼리를 실행시, executeQuery() 메서드를 사용한 결과가
+			java.sql.ResultSet 타입으로 반환된다.
+			레코드값을 테이블 형태로 가진 객체로 반환되어 반복문을 사용하여
+			레코드 단위로 결과값을 추출하여 활용한다.
+
+			* ResultSet 메서드
+			boolean		next() : 다음행에 값이 존재하면 true 리턴하고 다음행으로 커서이동.
+			Xxx		getXxx(int ColumnIndex)   : Xxx String, Int, Array, Timestamp 등등
+			Xxx		getXxx(String ColumnName) : 
+			void		close()
+			
+
+		6. Statement, ResultSet등 사용된 객체 종료
+
+		7. 데이터베이스 Connetion 종료
+
+
+	4) JDBC 드라이버 로딩과 사용
+	
+		JDBC API 는 java.sql.* 패키지에 의해 구현된다.
+		
+2. 실습
+
+	만든 회원가입 form 페이지 복붙
+	1) db에 테이블 만들기
+		id = primary key
+		reg = 가입날짜 시간
+	2) 새로 페이지 (insert.jsp) 만들어서 회원가입 시키기.
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
